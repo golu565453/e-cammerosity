@@ -1,5 +1,6 @@
 
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Product } from '../lib/data';
 import ProductCard from './ProductCard';
 
@@ -34,7 +35,13 @@ export default function ProductGrid({ products, title, subtitle, category }: Pro
         <div className="text-center mb-12">
           {title && (
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              {title}
+              {category ? (
+                <Link to={`/category/${category}`} className="hover:text-primary transition-colors">
+                  {title}
+                </Link>
+              ) : (
+                title
+              )}
             </h2>
           )}
           {subtitle && (
