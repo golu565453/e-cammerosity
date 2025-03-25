@@ -29,6 +29,14 @@ export default function Index() {
           subtitle="Discover our handpicked selection of premium products"
         />
         
+        {/* Electronics Section */}
+        <ProductGrid 
+          products={products} 
+          title="Electronics" 
+          subtitle="Discover the latest in technology and gadgets"
+          category="electronics"
+        />
+        
         {/* Promotional Banner */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
           <div className="relative overflow-hidden rounded-lg">

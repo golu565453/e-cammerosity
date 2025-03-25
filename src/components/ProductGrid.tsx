@@ -7,10 +7,16 @@ interface ProductGridProps {
   products: Product[];
   title?: string;
   subtitle?: string;
+  category?: string;
 }
 
-export default function ProductGrid({ products, title, subtitle }: ProductGridProps) {
+export default function ProductGrid({ products, title, subtitle, category }: ProductGridProps) {
   const [isLoaded, setIsLoaded] = useState(false);
+  
+  // Filter products by category if specified
+  const filteredProducts = category 
+    ? products.filter(product => product.category === category.toLowerCase())
+    : products;
   
   useEffect(() => {
     // Simulate loading delay
@@ -43,17 +49,23 @@ export default function ProductGrid({ products, title, subtitle }: ProductGridPr
       <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 transition-opacity duration-500 ${
         isLoaded ? 'opacity-100' : 'opacity-0'
       }`}>
-        {products.map((product) => (
-          <div 
-            key={product.id} 
-            className="animate-fade-in"
-            style={{ 
-              animationDelay: `${(products.indexOf(product) % 4) * 100}ms` 
-            }}
-          >
-            <ProductCard product={product} />
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <div 
+              key={product.id} 
+              className="animate-fade-in"
+              style={{ 
+                animationDelay: `${(filteredProducts.indexOf(product) % 4) * 100}ms` 
+              }}
+            >
+              <ProductCard product={product} />
+            </div>
+          ))
+        ) : (
+          <div className="col-span-full text-center py-12">
+            <p className="text-muted-foreground">No products found in this category.</p>
           </div>
-        ))}
+        )}
       </div>
     </section>
   );
