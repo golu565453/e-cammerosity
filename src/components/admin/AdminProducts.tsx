@@ -109,7 +109,7 @@ export default function AdminProducts() {
                     <Button 
                       variant="outline" 
                       size="icon" 
-                      onClick={() => handleDelete(product.id)}
+                      onClick={() => handleDelete(product.id.toString())}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
