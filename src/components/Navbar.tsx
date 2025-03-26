@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, Menu, X } from 'lucide-react';
+import { Search, ShoppingCart, Menu, X, User } from 'lucide-react';
 import { categories } from '../lib/data';
 
 export default function Navbar() {
@@ -56,7 +56,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Search, Cart, & Mobile Menu Toggle */}
+          {/* Search, Cart, Account & Mobile Menu Toggle */}
           <div className="flex items-center space-x-4">
             <button 
               className="p-2 rounded-full text-primary hover:bg-secondary transition-colors"
@@ -76,6 +76,14 @@ export default function Navbar() {
                   {cartCount}
                 </span>
               )}
+            </Link>
+            
+            <Link 
+              to="/login" 
+              className="p-2 rounded-full text-primary hover:bg-secondary transition-colors"
+              aria-label="Login"
+            >
+              <User size={20} />
             </Link>
             
             {/* Mobile Menu Toggle */}
@@ -114,6 +122,13 @@ export default function Navbar() {
               {category.name}
             </Link>
           ))}
+          <Link 
+            to="/login" 
+            className="block px-4 py-2 rounded-md hover:bg-secondary transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Login
+          </Link>
         </div>
       </div>
     </header>
