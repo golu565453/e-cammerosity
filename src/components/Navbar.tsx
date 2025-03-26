@@ -1,13 +1,18 @@
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, Menu, X, User } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Search, ShoppingCart, Menu, X, User, LogOut } from 'lucide-react';
 import { categories } from '../lib/data';
+import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
+  const { isAuthenticated, logout } = useAuth();
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   // Check scroll position to apply styling
   useEffect(() => {
@@ -24,6 +29,15 @@ export default function Navbar() {
     // This would normally come from a cart state or context
     setCartCount(2);
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out",
+    });
+    navigate('/login');
+  };
 
   return (
     <header 
@@ -78,13 +92,23 @@ export default function Navbar() {
               )}
             </Link>
             
-            <Link 
-              to="/login" 
-              className="p-2 rounded-full text-primary hover:bg-secondary transition-colors"
-              aria-label="Login"
-            >
-              <User size={20} />
-            </Link>
+            {isAuthenticated ? (
+              <button 
+                onClick={handleLogout}
+                className="p-2 rounded-full text-primary hover:bg-secondary transition-colors"
+                aria-label="Logout"
+              >
+                <LogOut size={20} />
+              </button>
+            ) : (
+              <Link 
+                to="/login" 
+                className="p-2 rounded-full text-primary hover:bg-secondary transition-colors"
+                aria-label="Login"
+              >
+                <User size={20} />
+              </Link>
+            )}
             
             {/* Mobile Menu Toggle */}
             <button 
@@ -122,13 +146,25 @@ export default function Navbar() {
               {category.name}
             </Link>
           ))}
-          <Link 
-            to="/login" 
-            className="block px-4 py-2 rounded-md hover:bg-secondary transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Login
-          </Link>
+          {isAuthenticated ? (
+            <button 
+              onClick={() => {
+                handleLogout();
+                setIsMenuOpen(false);
+              }}
+              className="block w-full text-left px-4 py-2 rounded-md hover:bg-secondary transition-colors"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link 
+              to="/login" 
+              className="block px-4 py-2 rounded-md hover:bg-secondary transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </header>
